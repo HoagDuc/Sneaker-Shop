@@ -3,8 +3,11 @@ import CRUDService from '../services/CRUDService';
 
 let getHomePage = async (req, res) => {
   try {
-    let data = await db.User.findAll();
-    console.log(data);
+    let data = await CRUDService.getAllUser();
+
+    return res.render('index.ejs', {
+      data: data,
+    });
 
     return res.render('index.ejs', {
       data: JSON.stringify(data),
@@ -15,7 +18,7 @@ let getHomePage = async (req, res) => {
 };
 
 let getCRUDPage = async (req, res) => {
-  return res.render('crud.ejs');
+  return res.render('createUser.ejs');
 };
 
 let createUser = async (req, res) => {
@@ -23,4 +26,40 @@ let createUser = async (req, res) => {
   return res.redirect('/crud');
 };
 
-module.exports = { getHomePage, getCRUDPage, createUser };
+let getEditUser = async (req, res) => {
+  let userId = req.query.id;
+  if (userId) {
+    let getDataUser = await CRUDService.getUserById(userId);
+
+    return res.render('editUser.ejs', {
+      userData: getDataUser,
+    });
+  } else {
+    return res.send('User not found!');
+  }
+};
+
+let updateUser = async (req, res) => {
+  let data = req.body;
+  await CRUDService.updateUser(data);
+
+  return res.redirect('/');
+};
+
+let deleteUser = async (req, res) => {
+  let userId = req.query.id;
+  if (userId) {
+    await CRUDService.deleteUserById(userId);
+    return res.redirect('/');
+  }
+  return res.send('User not found!');
+};
+
+module.exports = {
+  getHomePage,
+  getCRUDPage,
+  createUser,
+  getEditUser,
+  updateUser,
+  deleteUser,
+};
