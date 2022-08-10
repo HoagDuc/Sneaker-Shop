@@ -24,7 +24,7 @@ const handleLogin = (email, password) => {
             userData.User = user;
           } else {
             userData.errCode = 3;
-            userData.errMessage = 'Error password';
+            userData.errMessage = 'Wrong password';
           }
         } else {
           userData.errCode = 2;

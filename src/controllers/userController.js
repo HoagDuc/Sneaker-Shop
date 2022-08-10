@@ -15,7 +15,7 @@ const handleLogin = async (req, res) => {
 
   return res.status(200).json({
     errCode: userData.errCode,
-    message: userData.message,
+    message: userData.errMessage,
     user: userData.User ? userData.User : {},
   });
 };
