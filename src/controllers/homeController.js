@@ -1,7 +1,7 @@
 import db from '../models/index';
 import CRUDService from '../services/CRUDService';
 
-let getHomePage = async (req, res) => {
+const getHomePage = async (req, res) => {
   try {
     let data = await CRUDService.getAllUser();
 
@@ -17,16 +17,16 @@ let getHomePage = async (req, res) => {
   }
 };
 
-let getCRUDPage = async (req, res) => {
+const getCRUDPage = async (req, res) => {
   return res.render('createUser.ejs');
 };
 
-let createUser = async (req, res) => {
+const createUser = async (req, res) => {
   await CRUDService.createNewUser(req.body);
   return res.redirect('/crud');
 };
 
-let getEditUser = async (req, res) => {
+const getEditUser = async (req, res) => {
   let userId = req.query.id;
   if (userId) {
     let getDataUser = await CRUDService.getUserById(userId);
@@ -39,14 +39,14 @@ let getEditUser = async (req, res) => {
   }
 };
 
-let updateUser = async (req, res) => {
+const updateUser = async (req, res) => {
   let data = req.body;
   await CRUDService.updateUser(data);
 
   return res.redirect('/');
 };
 
-let deleteUser = async (req, res) => {
+const deleteUser = async (req, res) => {
   let userId = req.query.id;
   if (userId) {
     await CRUDService.deleteUserById(userId);

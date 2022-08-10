@@ -2,7 +2,7 @@ import db from '../models/index';
 import bcrypt from 'bcryptjs';
 var salt = bcrypt.genSaltSync(10);
 
-let createNewUser = (data) => {
+const createNewUser = (data) => {
   return new Promise(async (resolve, reject) => {
     try {
       let hashPasswordFrombcrypt = await hashUserPassword(data.password);
@@ -24,7 +24,7 @@ let createNewUser = (data) => {
   });
 };
 
-let hashUserPassword = (password) => {
+const hashUserPassword = (password) => {
   return new Promise(async (resolve, reject) => {
     try {
       let hashPassword = await bcrypt.hashSync(password, salt);
@@ -35,7 +35,7 @@ let hashUserPassword = (password) => {
   });
 };
 
-let getAllUser = () => {
+const getAllUser = () => {
   return new Promise((resolve, reject) => {
     try {
       let user = db.User.findAll({
@@ -49,7 +49,7 @@ let getAllUser = () => {
   });
 };
 
-let getUserById = (id) => {
+const getUserById = (id) => {
   return new Promise(async (resolve, reject) => {
     try {
       let user = await db.User.findOne({
@@ -68,7 +68,7 @@ let getUserById = (id) => {
   });
 };
 
-let updateUser = (data) => {
+const updateUser = (data) => {
   return new Promise(async (resolve, reject) => {
     try {
       let user = await db.User.findOne({
@@ -91,19 +91,14 @@ let updateUser = (data) => {
   });
 };
 
-let deleteUserById = (id) => {
+const deleteUserById = (id) => {
   return new Promise(async (resolve, reject) => {
     try {
-      let user = await db.User.findAll({
+      let user = await db.User;
+      await user.destroy({
         where: { id: id },
       });
-      if (user) {
-        await user.destroy();
-        resolve();
-        console.log(user);
-      } else {
-        resolve();
-      }
+      resolve();
     } catch (e) {
       reject(e);
     }
