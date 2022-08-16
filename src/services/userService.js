@@ -105,26 +105,26 @@ const createNewUser = (data) => {
       if (check === true) {
         resolve({
           errCode: 1,
-          message: 'Email already exists',
+          errMessage: 'Email already exists',
+        });
+      } else {
+        let hashPasswordFrombcrypt = await hashUserPassword(data.password);
+        await db.User.create({
+          email: data.email,
+          password: hashPasswordFrombcrypt,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          phoneNumber: data.phoneNumber,
+          address: data.address,
+          gender: data.gender === '1' ? true : false,
+          role_id: data.role,
+        });
+
+        resolve({
+          errCode: 0,
+          errMessage: 'ok',
         });
       }
-
-      let hashPasswordFrombcrypt = await hashUserPassword(data.password);
-      await db.User.create({
-        email: data.email,
-        password: hashPasswordFrombcrypt,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        phoneNumber: data.phoneNumber,
-        address: data.address,
-        gender: data.gender === '1' ? true : false,
-        role_id: data.role,
-      });
-
-      resolve({
-        errCode: 0,
-        message: 'ok',
-      });
     } catch (e) {
       reject(e);
     }
@@ -144,15 +144,15 @@ const deleteUser = (id) => {
 
         resolve({
           errCode: 0,
-          message: 'ok',
+          errMessage: 'ok',
+        });
+      } else {
+        resolve({
+          errCode: 2,
+          errMessage: `User isn't exists!`,
+          user,
         });
       }
-
-      resolve({
-        errCode: 2,
-        message: `User isn't exists!`,
-        user,
-      });
     } catch (e) {
       reject(e);
     }
